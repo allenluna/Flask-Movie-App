@@ -1,0 +1,184 @@
+{% extends "header.html" %}
+
+{% block content %}
+
+
+
+<div class="container-fluid banner">
+    
+{% if movies %}
+
+    <div id="carouselExampleIndicators" class="carousel slide"  data-bs-ride="carousel">
+        <div class="carousel-indicators">
+            {% for post in range(movies[:3] | length) %}
+                <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="{{post}}" class="carousel-btn" aria-current="true" aria-label="Slide {{post + 1}}"></button>
+            {% endfor %}
+        </div>
+        <div class="carousel-inner">
+            {% for post in movies[:3] %}
+                <div class="carousel-item carousel-banner" data-bs-interval="5000">
+                    <div class="card text-bg-dark rounded-0 border-0">
+                        <div class="banner-img" style="background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('{{post.banner}}');">
+                            <div class="container card-img-overlay banner-summary">
+                                
+                                <h2 class="card-title title">{{ post.title }}</h5>
+                                <p class="card-text overview">{{ post.overview }}</p>
+                                <div class="rating d-flex">
+                                    <span class="d-flex align-items-center border-end border-secondary pe-4">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-star-fill text-warning" viewBox="0 0 16 16">
+                                            <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"/>
+                                        </svg>
+                                        <small class="ms-2">{{ post.rating }}</small>
+                                    </span>
+                                    <span class="ps-4">{{ post.date }}</span>
+                                </div>
+                                <div class="play-btn mt-4 d-flex">
+                                    <a href="" class="btn web-btn d-flex align-items-center">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-play-fill" viewBox="0 0 16 16">
+                                            <path d="m11.596 8.697-6.363 3.692c-.54.313-1.233-.066-1.233-.697V4.308c0-.63.692-1.01 1.233-.696l6.363 3.692a.802.802 0 0 1 0 1.393z"/>
+                                        </svg>
+                                        <span class="ms-2">Watch</span>
+                                    </a>
+                                    <a href="" class="btn btn-list ms-2 d-flex align-items-center">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-lg" viewBox="0 0 16 16">
+                                            <path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2Z"/>
+                                        </svg>
+                                        <span class="ms-2">Watch List</span>
+                                    </a>
+                                </div>
+                            </div>  
+                        </div>
+                    </div>
+                </div>
+          {% endfor %}
+        </div>
+      </div>
+</div>
+
+<section class="popular">
+    <div class="container my-5">
+        <h2 class="line">Popular</h2>
+        <div id="popCarousel" class="carousel my-3"  data-bs-ride="carousel">
+            <div class="carousel-inner popular-inner">
+                {% for popular in populars %}
+                
+                    <div class="carousel-item popular-carousel popular-item"  data-bs-interval="5000">
+                        <a href="{{ url_for('view.preview', pop_id=popular.id) }}">
+                            <div class="img-wrapper">
+                                <img src="{{ popular.image }}" class="d-block" alt="{{ popular.title }}">
+                            </div>
+                            <div class="card-summary web-card">
+                            <h2>{{ popular.title }}</h2>
+                            </div>
+                        </a>
+                    </div>
+                
+                {% endfor %}
+            
+            </div>
+            <button class="carousel-control-prev popular-prev" type="button" data-bs-target="#popCarousel" data-bs-slide="prev">
+              <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+              <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next popular-next" type="button" data-bs-target="#popCarousel" data-bs-slide="next">
+              <span class="carousel-control-next-icon" aria-hidden="true"></span>
+              <span class="visually-hidden">Next</span>
+            </button>
+          </div>
+    </div>
+</section>
+
+<section class="movies">
+    <div class="container my-5">
+        <h2 class="line">Movies</h2>
+        <div id="movCarousel" class="carousel my-3"  data-bs-ride="carousel">
+            <div class="carousel-inner movie-inner">
+                {% for movie in movies[:20] %}
+                
+                    <div class="carousel-item movie-carousel movie-item" data-bs-interval="5000">
+                        <a href="{{ url_for('view.preview', movie_id=movie.id) }}">
+                            <div class="img-wrapper">
+                                <img src="{{ movie.image }}" class="d-block" alt="{{ movie.title }}">
+                            </div>
+                            <div class="card-summary web-card">
+                            <h2>{{ movie.title }}</h2>
+                            </div>
+                        </a>
+                    </div>
+                
+                {% endfor %}
+            
+            </div>
+            <button class="carousel-control-prev movie-prev" type="button" data-bs-target="#movCarousel" data-bs-slide="prev">
+              <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+              <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next movie-next" type="button" data-bs-target="#movCarousel" data-bs-slide="next">
+              <span class="carousel-control-next-icon" aria-hidden="true"></span>
+              <span class="visually-hidden">Next</span>
+            </button>
+          </div>
+    </div>
+</section>
+
+{% endif %}
+
+{% if upcomming %}
+    <section class="upcomming">
+
+        
+        <div class="container-fluid autoplay-banner position-relative">
+            <iframe src="{{ upcomming_trailer }}?rel=0&autoplay=1&modestbranding=1&mute=1&controls=0&showinfo=0&loop=1&playlist=WZ1je_JJTv8" 
+            allow="accelerometer; encrypted-media; gyroscope; picture-in-picture"
+            class="autoplay-vid" 
+            frameborder="0"
+            allowfullscreen
+            >
+        </iframe>
+        </div>
+        
+
+        <div class="container">
+            <h2 class="line">Upcomming</h2>
+            <div id="upcommingCarousel" class="carousel my-3"  data-bs-ride="carousel">
+                <div class="carousel-inner upcomming-inner">
+                    {% for movie in upcomming %}
+                    
+                        <div class="carousel-item upcomming-carousel upcomming-item" data-bs-interval="5000">
+                            <a href="{{ url_for('view.preview', upcom_id=movie.id) }}">
+                                <div class="img-wrapper">
+                                    <img src="{{ movie.image }}" class="d-block" alt="{{ movie.title }}">
+                                </div>
+                                <div class="card-summary web-card">
+                                <h2>{{ movie.title }}</h2>
+                                </div>
+                            </a>
+                        </div>
+                    
+                    {% endfor %}
+                
+                </div>
+                <button class="carousel-control-prev upcom-prev" type="button" data-bs-target="#upcommingCarousel" data-bs-slide="prev">
+                  <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                  <span class="visually-hidden">Previous</span>
+                </button>
+                <button class="carousel-control-next upcom-next" type="button" data-bs-target="#upcommingCarousel" data-bs-slide="next">
+                  <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                  <span class="visually-hidden">Next</span>
+                </button>
+              </div>
+
+        </div>
+        </section>
+
+    {% endif %}
+{% endblock %}
+
+{% block script %} 
+
+<script src="{{ url_for('static', filename='js/banner.js') }}"></script>
+<script src="{{ url_for('static', filename='js/navbar.js') }}"></script>
+
+{% endblock %}
+
+

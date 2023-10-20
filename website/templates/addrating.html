@@ -1,0 +1,26 @@
+{% include "header.html" %}
+
+
+
+<div class="container rating">
+<h2>Rating</h2>
+  <form action="" method="post">
+      <div class="input-group mb-3">
+          <label class="input-group-text" for="inputGroupSelect01">Options</label>
+          <select name="rating" class="form-select" id="inputGroupSelect01">
+            <option value="">Choose...</option>
+            <option value="⭐">⭐</option>
+            <option value="⭐⭐">⭐⭐</option>
+            <option value="⭐⭐⭐">⭐⭐⭐</option>
+            <option value="⭐⭐⭐⭐">⭐⭐⭐⭐</option>
+            <option value="⭐⭐⭐⭐⭐">⭐⭐⭐⭐⭐</option>
+          </select>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Rating</label>
+          <input name="ratingNum" type="text" pattern="\d*" class="form-control" placeholder="8.9">
+        </div>
+        <button class="btn submit-btn">Rating</button>
+  </form>
+</div>
+

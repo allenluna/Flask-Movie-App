@@ -1,0 +1,44 @@
+{% extends "header.html" %}
+
+{% block title %} Popular Movies {% endblock %}
+
+{% block content %}
+{% if movies %}
+
+<div class="autoplay-banner">
+    <iframe src="{{banner[0]}}?rel=0&autoplay=1&modestbranding=1&mute=1&controls=0&showinfo=0&loop=1&playlist={{banner[1]}}" 
+        allow="accelerometer; encrypted-media; gyroscope; picture-in-picture"
+        class="autoplay-vid " 
+        frameborder="0"
+        >
+    </iframe>
+</div>
+
+<div class="container my-5">
+    <h2>Movies</h2>
+    <div class="line"></div>
+    <div class="row row-cols-lg-5 row-cols-md-5 row-cols-sm-3 row-cols-2 g-2">
+        {% for movie in movies %}
+            <div class="col">
+                <div class=" card-link">
+                    <a href="{{ url_for('view.preview', movie_id=movie.id) }}" class="card-link">
+                        <div class="card web-card">
+                            <img src="{{movie.image}}" class="card-img-top" alt="{{ movie.title }}">
+                            <div class="card-summary">
+                            <h2 class="card-title">{{ movie.title }}</h2>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+
+{% endif %}
+
+{% endblock %}
+
+{% block script %}
+<script src="{{ url_for('static', filename='js/navbar.js') }}"></script>
+{% endblock %}

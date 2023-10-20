@@ -1,0 +1,77 @@
+{% extends "header.html" %}
+
+{% block title %} My List {% endblock %}
+
+{% block content %}
+
+
+
+<div class="container mylist-container">
+    <h2 class="text-center line">Upcomming</h2>
+    <div class="wrapper" id="mylist-wrapper">
+        {% for movie in range(current_user.mylists | length) %}
+            
+            <div class="card mylistCard">
+                <img src="{{ current_user.mylists[movie].banner }}"/>
+                <div class="info">
+                    <h1>{{current_user.mylists[movie].title}}</h1>
+                    <p class="mylist-overview">{{ current_user.mylists[movie].overview }}</p>
+                    <a data-bs-toggle="modal" data-bs-target="#trailerModal{{movie}}"><i class="bi bi-play"></i></a>
+                    <a id="{{current_user.mylists[movie].id}}" class="remove-list"
+                    data-bs-toggle="modal" data-bs-target="#deleteModalList"
+                    ><i class="bi bi-trash"></i></a>
+                </div>
+            </div>
+
+            <div class="modal fade movie-bg" id="trailerModal{{movie}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-xl trailer">
+                  <div class="modal-content trailer-content">
+                    <div class="trailer-head position-absolute top-0 right-0 w-100 p-3">
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                        
+                    </div>
+                    <div class="modal-body trailer-body">
+                      <iframe src="{{ current_user.mylists[movie].movie }}?rel=0&autoplay=1&mute=1&modestbranding=0&autohide=0&enablejsapi=1"
+                      class=""
+                      id="trailer" 
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                      frameborder="0" class="" 
+                      width="100%" 
+                      height="100%" 
+                      allowfullscreen></iframe>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            
+        {% endfor %}
+    </div>
+</div>
+
+
+<!--  delete button modal body -->
+<div class="modal fade" id="deleteModalList" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content text-bg-dark">
+      <div class="modal-header border-bottom border-secondary">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Delete List</h1>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body ">
+        Are you sure you want to delete this movie?
+      </div>
+      <div class="modal-footer border-top border-secondary">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn delete-list" data-bs-dismiss="modal" id="delete-list">Delete</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
+
+{% block script %}
+<script src="{{ url_for('static', filename='js/navbar.js') }}"></script>
+<script src="{{ url_for('static', filename='js/mylistFile.js') }}"></script>
+{% endblock %}

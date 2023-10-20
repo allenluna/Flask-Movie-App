@@ -1,0 +1,36 @@
+{% include "header.html" %}
+
+<div class="container-fluid auth-bg">
+
+    <div class="container pt-5 text-white post-movie">
+
+
+    <div class="auth-form">
+
+        {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            {{message}}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+        {% endwith %}
+        
+    <form action="" method="post" class="p-5">
+        <h2 class="mb-3">
+            Title
+        </h2>
+        <div class="form-floating mb-3 input-form">
+            <input name="title" type="text" class="form-control input-form text-bg-dark" id="floatingInput" placeholder="Title">
+            <label for="floatingInput">Movie title</label>
+        </div>
+
+        <button class="btn text-white px-lg-5 web-btn" type="submit" >Search</button>
+    </form>
+    
+    </div>
+    </div>
+
+</div>

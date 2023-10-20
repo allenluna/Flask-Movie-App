@@ -1,0 +1,373 @@
+{% extends "header.html" %}
+{% block title %} Preview {% endblock %}
+
+{% block content %}
+
+<div class="container m-auto" id="list-added">
+    <div class="alert alert-danger alert-dismissible fade show mt-3 list-added" role="alert" id="success-alert">
+        
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+</div>
+
+{% if popular %}
+
+<div class="preview-image" style="background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('{{ popular.banner }}');">
+    <div class="container preview-summary">
+        <h2 class="title">{{ popular.title }}</h2>
+        <p>{{ popular.overview }}</p>
+        <div class="rating d-flex">
+            <span class="d-flex align-items-center border-end border-secondary pe-4">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-star-fill text-warning" viewBox="0 0 16 16">
+                    <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"/>
+                </svg>
+                <small class="ms-2">{{ popular.rating }}</small>
+            </span>
+            <span class="ps-4">{{ popular.date }}</span>
+        </div>
+        <div class="play-btn mt-4 d-flex">
+            {% if current_user.is_authenticated %}
+            <a href="" class="btn web-btn d-flex align-items-center" data-bs-toggle="modal" data-bs-target="#trailerModal">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-play-fill" viewBox="0 0 16 16">
+                    <path d="m11.596 8.697-6.363 3.692c-.54.313-1.233-.066-1.233-.697V4.308c0-.63.692-1.01 1.233-.696l6.363 3.692a.802.802 0 0 1 0 1.393z"/>
+                </svg>
+                <span class="ms-2">Watch</span>
+            </a>
+            {% else %}
+            <a href="{{ url_for('auth.login') }}" class="btn web-btn d-flex align-items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-play-fill" viewBox="0 0 16 16">
+                    <path d="m11.596 8.697-6.363 3.692c-.54.313-1.233-.066-1.233-.697V4.308c0-.63.692-1.01 1.233-.696l6.363 3.692a.802.802 0 0 1 0 1.393z"/>
+                </svg>
+                <span class="ms-2">Watch</span>
+            </a>
+            {% endif %}
+            <a id="{{popular.id}}" class="btn btn-list ms-2 d-flex align-items-center popularWatchList">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-lg" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2Z"/>
+                </svg>
+                <span class="ms-2" >Watch List</span>
+            </a>
+        </div>
+    </div>
+  </div>
+
+<div class="container my-5">
+    <h2 class="line">Cast</h2>
+    <div id="prevData" class="carousel">
+        <div class="carousel-inner c-inner">
+            {% for cast in casts %}
+                <div class="carousel-item c-item">
+                    <div class="cast-img">
+                        <img src="{{ cast.cast_img }}" class="d-block" alt="{{ cast.name }}">
+                    </div>
+                    
+                    <div class="card-summary web-card">
+                        <h2>{{ cast.name }}</h2>
+                </div>
+                </div>
+                
+            {% endfor %}
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#prevData" data-bs-slide="prev">
+          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#prevData" data-bs-slide="next">
+          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Next</span>
+        </button>
+      </div>
+</div>
+
+<!-- Watch -->
+
+<!-- Modal -->
+
+<div class="modal fade movie-bg" id="trailerModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl trailer">
+      <div class="modal-content trailer-content">
+        <div class="trailer-head position-absolute top-0 right-0 w-100 p-3">
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            
+        </div>
+        <div class="modal-body trailer-body">
+            
+          <iframe src="{{ popular.movie }}?rel=0&autoplay=1&mute=1&modestbranding=0&autohide=0&enablejsapi=1"
+          class=""
+          id="trailer" 
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          frameborder="0" class="" 
+          width="100%" 
+          height="100%" 
+          allowfullscreen></iframe>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% if current_user.is_authenticated %}
+    <div class="container my-5">
+        <h2 class="line">Trailer</h2>
+        <div class="row row-cols-2 row-cols-lg-3 g-2">
+            {% for trailer in all_trailer %}
+                <div class="col">
+                    <iframe src="{{trailer}}?rel=0&mute=1&modestbranding=0&autohide=0&enablejsapi=1"
+                        class=""
+                        id="trailer" 
+                        allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                        frameborder="0"
+                        width="100%" 
+                        height="100%" 
+                        allowfullscreen>
+                    </iframe>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+  {% endif %}
+
+{% endif %}
+
+{% if upcomming %}
+
+<div class="preview-image" style="background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('{{ upcomming.banner }}');">
+    <div class="container preview-summary">
+        <h2 class="title">{{ upcomming.title }}</h2>
+        <p>{{ upcomming.overview }}</p>
+        <div class="rating d-flex">
+            <span class="d-flex align-items-center border-end border-secondary pe-4">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-star-fill text-warning" viewBox="0 0 16 16">
+                    <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"/>
+                </svg>
+                <small class="ms-2">{{ upcomming.rating }}</small>
+            </span>
+            <span class="ps-4">{{ upcomming.date }}</span>
+        </div>
+        <div class="play-btn mt-4 d-flex">
+            {% if current_user.is_authenticated %}
+            <a href="" class="btn web-btn d-flex align-items-center" data-bs-toggle="modal" data-bs-target="#trailerModal">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-play-fill" viewBox="0 0 16 16">
+                    <path d="m11.596 8.697-6.363 3.692c-.54.313-1.233-.066-1.233-.697V4.308c0-.63.692-1.01 1.233-.696l6.363 3.692a.802.802 0 0 1 0 1.393z"/>
+                </svg>
+                <span class="ms-2">Watch</span>
+            </a>
+            {% else %}
+            <a href="{{ url_for('auth.login') }}" class="btn web-btn d-flex align-items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-play-fill" viewBox="0 0 16 16">
+                    <path d="m11.596 8.697-6.363 3.692c-.54.313-1.233-.066-1.233-.697V4.308c0-.63.692-1.01 1.233-.696l6.363 3.692a.802.802 0 0 1 0 1.393z"/>
+                </svg>
+                <span class="ms-2">Watch</span>
+            </a>
+            {% endif %}
+            <a id="{{upcomming.id}}" class="btn btn-list ms-2 d-flex align-items-center upcommingWatchList">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-lg" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2Z"/>
+                </svg>
+                <span class="ms-2">Watch List</span>
+            </a>
+        </div>
+    </div>
+  </div>
+
+<div class="container my-5">
+    <h2 class="line">Cast</h2>
+    <div id="prevData" class="carousel">
+        <div class="carousel-inner c-inner">
+            {% for cast in casts %}
+                <div class="carousel-item c-item">
+                    <div class="cast-img">
+                        <img src="{{ cast.cast_img }}" class="d-block" alt="{{ cast.name }}">
+                    </div>
+                    
+                    <div class="card-summary web-card">
+                        <h2>{{ cast.name }}</h2>
+                </div>
+                </div>
+                
+            {% endfor %}
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#prevData" data-bs-slide="prev">
+          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#prevData" data-bs-slide="next">
+          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Next</span>
+        </button>
+      </div>
+</div>
+
+<!-- Watch -->
+
+<!-- Modal -->
+
+<div class="modal fade movie-bg" id="trailerModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl trailer">
+      <div class="modal-content trailer-content">
+        <div class="trailer-head position-absolute top-0 right-0 w-100 p-3">
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            
+        </div>
+        <div class="modal-body trailer-body">
+          <iframe src="{{ upcomming.movie }}?rel=0&autoplay=1&mute=1&modestbranding=0&autohide=0&enablejsapi=1"
+          class=""
+          id="trailer" 
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          frameborder="0" class="" 
+          width="100%" 
+          height="100%" 
+          allowfullscreen></iframe>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% if current_user.is_authenticated %}
+  <div class="container my-5">
+    <h2 class="line">Trailer</h2>
+    <div class="row row-cols-2 row-cols-lg-3 g-2">
+        {% for trailer in all_trailer %}
+            <div class="col">
+                <iframe src="{{trailer}}?rel=0&mute=1&modestbranding=0&controls=0&autohide=0&enablejsapi=1"
+                    class=""
+                    id="trailer" 
+                    allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    frameborder="0"
+                    width="100%" 
+                    height="100%" 
+                    allowfullscreen>
+                </iframe>
+            </div>
+        {% endfor %}
+    </div>
+  </div>
+  {% endif %}
+
+  
+
+{%endif%}
+
+{% if movies %}
+
+<div class="preview-image" style="background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('{{ movies.banner }}');">
+    <div class="container preview-summary">
+        <h2 class="title">{{ movies.title }}</h2>
+        <p>{{ movies.overview }}</p>
+        <div class="rating d-flex">
+            <span class="d-flex align-items-center border-end border-secondary pe-4">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-star-fill text-warning" viewBox="0 0 16 16">
+                    <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"/>
+                </svg>
+                <small class="ms-2">{{ movies.rating }}</small>
+            </span>
+            <span class="ps-4">{{ movies.date }}</span>
+        </div>
+        <div class="play-btn mt-4 d-flex">
+            {% if current_user.is_authenticated %}
+            <a href="" class="btn web-btn d-flex align-items-center" data-bs-toggle="modal" data-bs-target="#trailerModal">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-play-fill" viewBox="0 0 16 16">
+                    <path d="m11.596 8.697-6.363 3.692c-.54.313-1.233-.066-1.233-.697V4.308c0-.63.692-1.01 1.233-.696l6.363 3.692a.802.802 0 0 1 0 1.393z"/>
+                </svg>
+                <span class="ms-2">Watch</span>
+            </a>
+            {% else %}
+            <a href="{{ url_for('auth.login') }}" class="btn web-btn d-flex align-items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-play-fill" viewBox="0 0 16 16">
+                    <path d="m11.596 8.697-6.363 3.692c-.54.313-1.233-.066-1.233-.697V4.308c0-.63.692-1.01 1.233-.696l6.363 3.692a.802.802 0 0 1 0 1.393z"/>
+                </svg>
+                <span class="ms-2">Watch</span>
+            </a>
+            {% endif %}
+            <a id="{{movies.id}}" class="btn btn-list ms-2 d-flex align-items-center moviesWatchList">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-lg" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2Z"/>
+                </svg>
+                <span class="ms-2">Watch List</span>
+            </a>
+        </div>
+    </div>
+  </div>
+
+<div class="container my-5">
+    <h2 class="line">Cast</h2>
+    <div id="prevData" class="carousel">
+        <div class="carousel-inner c-inner">
+            {% for cast in casts %}
+                <div class="carousel-item c-item">
+                    <div class="cast-img">
+                        <img src="{{ cast.cast_img }}" class="d-block" alt="{{ cast.name }}">
+                    </div>
+                    
+                    <div class="card-summary web-card">
+                        <h2>{{ cast.name }}</h2>
+                </div>
+                </div>
+                
+            {% endfor %}
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#prevData" data-bs-slide="prev">
+          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#prevData" data-bs-slide="next">
+          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Next</span>
+        </button>
+      </div>
+</div>
+
+<!-- Watch -->
+
+<!-- Modal -->
+
+<div class="modal fade movie-bg" id="trailerModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl trailer">
+      <div class="modal-content trailer-content">
+        <div class="trailer-head position-absolute top-0 right-0 w-100 p-3">
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            
+        </div>
+        <div class="modal-body trailer-body">
+          <iframe src="{{ movies.movie }}?rel=0&autoplay=1&mute=1&modestbranding=1&autohide=0&enablejsapi=1"
+          class=""
+          id="trailer" 
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          frameborder="0" class="" 
+          width="100%" 
+          height="100%" 
+          allowfullscreen></iframe>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% if current_user.is_authenticated %}
+  <div class="container my-5">
+    <h2 class="line">Trailer</h2>
+    <div class="row row-cols-2 row-cols-lg-3 g-2">
+        {% for trailer in all_trailer %}
+            <div class="col">
+                <iframe src="{{trailer}}?rel=0&mute=1&modestbranding=0&controls=0autohide=0&enablejsapi=1"
+                    class=""
+                    id="trailer" 
+                    allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    frameborder="0"
+                    width="100%" 
+                    height="100%" 
+                    allowfullscreen>
+                </iframe>
+            </div>
+        {% endfor %}
+    </div>
+  </div>
+  {% endif %}
+
+  
+
+{%endif%}
+
+{% endblock %}
+
+{% block script %} 
+
+<script src="{{ url_for('static', filename='js/character.js') }}"></script>
+<script src="{{ url_for('static', filename='js/navbar.js') }}"></script>
+<script src="{{ url_for('static', filename='js/mylist.js') }}"></script>
+{% endblock %}

@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Permissions-Policy" content="interest-cohort=()">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <title>{% block title %}{% endblock %}</title>
+</head>
+<body class="">
+
+  <div class="container-fluid nav-fixed">
+      <nav class="navbar navbar-expand-lg" aria-label="Offcanvas navbar large">
+        <div class="container-fluid">
+          <a class="navbar-brand text-white logo" href="#">Movies</a>
+          <a class="navbar-toggler text-white" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar2" aria-controls="offcanvasNavbar2" aria-label="Toggle navigation">
+            <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-list" viewBox="0 0 16 16">
+              <path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"/>
+            </svg>
+          </a>
+          <div class="offcanvas offcanvas-end text-bg-dark" tabindex="-1" id="offcanvasNavbar2" aria-labelledby="offcanvasNavbar2Label">
+            <div class="offcanvas-header">
+              <h5 class="offcanvas-title" id="offcanvasNavbar2Label">Movies</h5>
+              <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+            </div>
+            <div class="offcanvas-body">
+              <ul class="navbar-nav justify-content-center align-items-lg-center flex-grow-1 pe-3">
+                <li class="nav-item">
+                  <a class="nav-link active text-white" aria-current="page" href="{{ url_for('view.home') }}">Home</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link link" href="{{ url_for('view.movie_data') }}">Movies</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link link" href="{{ url_for('view.upcomming_data') }}">Upcomming</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link link" href="{{ url_for('view.popular_data') }}">Popular</a>
+                </li>
+                
+              </ul>
+              <div class="search-section d-lg-flex align-items-center justify-content-center">
+              <div class="dropdown">
+                <a class="me-2 text-white" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16">
+                    <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
+                    <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"/>
+                  </svg>
+                </a>
+                <ul class="dropdown-menu dropdown-menu-dark">
+                  {% if not current_user.is_authenticated %}
+                    <li><a class="dropdown-item" href="{{ url_for('auth.login') }}">Login</a></li>
+                    <li><a class="dropdown-item border-bottom border-secondary" href="{{ url_for('auth.sign_up') }}">Sign up</a></li>
+                  {% else %}
+                    {% if current_user.id == 1 %}
+                      <li><a class="dropdown-item" href="{{ url_for('post_movie.movie') }}">Add movie</a></li>
+                      <li><a class="dropdown-item" href="{{ url_for('post_movie.popular') }}">Popular</a></li>
+                      <li><a class="dropdown-item" href="{{ url_for('post_movie.upcomming') }}">Upcomming</a></li>
+                    {% endif %}
+                    <li><a class="dropdown-item" href="{{ url_for('view.added_lists') }}">My List</a></li>
+                    <li><a class="dropdown-item" href="{{ url_for('auth.logout') }}">Logout</a></li>
+                  {% endif %}
+
+                </ul>
+              </div>
+              
+              <div class="d-flex pt-3 mt-lg-0 w-100" role="search">
+                <div class="input-group mb-3 dropdown">
+                  <input 
+                  id="search" 
+                  type="text" 
+                  class="form-control search dropdown-toggle" 
+                  placeholder="Search" 
+                  data-bs-toggle="dropdown" 
+                  aria-expanded="false"
+                  autocomplete="off"
+                  >
+
+                  
+                  <ul class="dropdown-menu search-menu text-bg-dark">
+                    
+                  </ul>
+                  
+                  <div class="btn btn-search web-btn" id="searchBtn">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-search text-white" viewBox="0 0 16 16">
+                      <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+                    </svg>
+                  </div>
+                </div>
+              </div>
+            </div>
+            </div>
+          </div>
+        </div>
+      </nav>
+  </div>
+
+    
+  <div class="container-fluid border-top border-dark footer">
+    <div class="container">
+      <footer class="d-flex flex-wrap justify-content-between align-items-center py-3 my-2">
+        <div class="col-md-4 d-flex align-items-center">
+          <span class="mb-3 mb-md-0 text-body-white" id="footer-date"></span>
+        </div>
+
+        <div>
+          <a class="navbar-brand text-white logo" href="#">Movies</a>
+        </div>
+    
+        <ul class="nav col-md-4 justify-content-end list-unstyled d-flex footer-social">
+          <li class="ms-3"><a class="text-white footer-icon github" href="#"><i class="bi bi-github"></i></a></li>
+          <li class="ms-3"><a class="text-white footer-icon facebook" href="#"><i class="bi bi-facebook"></i></a></li>
+          <li class="ms-3"><a class="text-white footer-icon google" href="#"><i class="bi bi-google"></i></a></li>
+        </ul>
+      </footer>
+    </div>
+  </div>
+    
+    {% block content %}{% endblock %}
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js" integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
+    <script src="{{ url_for('static', filename='js/movie_carousel.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/search.js') }}"></script>
+    {% block script %} {% endblock %}
+</body>
+</html>

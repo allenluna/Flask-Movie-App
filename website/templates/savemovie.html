@@ -1,0 +1,33 @@
+{% include "header.html" %}
+
+
+
+<div class="container save-movie">
+    <h2 class="heading">Save Movie</h2>
+    
+    <div class="row g-2">
+        {% for movie in datas %}
+        <div class="col-lg-2 col-md-3 col-sm-6">
+            <div class="p-2">
+                <div class="card web-card">
+                    <img src="{{img_display}}{{movie.poster_path}}" height="200" class="card-img-top" alt="{{movie.title}}">
+                    <div class="card-body text-bg-dark border-0">
+                      <p class="fs-6 card-title"  style="height: 150px">{{movie.title}}</p>
+                      <div class="saveBtn  position-relative ">
+                      <a  href="{{url_for('post_movie.upload_movie', id=movie.id)}}" class="btn web-btn icon-link text-white icon-link-hover position-absolute bottom-0 start-0" style="--bs-icon-link-transform: translate3d(0, -.125rem, 0);">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-file-earmark-arrow-down" viewBox="0 0 16 16">
+                            <path d="M8.5 6.5a.5.5 0 0 0-1 0v3.793L6.354 9.146a.5.5 0 1 0-.708.708l2 2a.5.5 0 0 0 .708 0l2-2a.5.5 0 0 0-.708-.708L8.5 10.293V6.5z"/>
+                            <path d="M14 14V4.5L9.5 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2zM9.5 3A1.5 1.5 0 0 0 11 4.5h2V14a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h5.5v2z"/>
+                          </svg>
+                          Save movie
+                        </a>
+                    </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    
+</div>
+

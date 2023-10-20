@@ -1,0 +1,78 @@
+@import url('https://fonts.googleapis.com/css2?family=Alfa+Slab+One&display=swap');  
+@import url('https://fonts.googleapis.com/css2?family=Archivo+Narrow:wght@400;500;700&family=Poppins:wght@500;700;900&family=Roboto:wght@300;400;700&display=swap');
+
+.logo{
+    color: #ff0000fa !important;
+    font-weight: bold;
+    font-size: 36px !important;
+    font-family: 'Alfa Slab One', cursive;
+    letter-spacing: 5px;
+}
+
+.auth-bg{
+    width: 100% !important;
+    height: 100vh !important;
+    background-image: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url("../img/auth.jpg");
+    background-position: center;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 30px 60px -12px inset, rgba(0, 0, 0, 0.3) 0px 18px 36px -18px inset;
+
+}
+
+.auth-form{
+    width: 50%;
+    margin: auto;
+    padding: 3%;
+    border-radius: 20px;
+    /* From https://css.glass */
+    background: rgba(16, 16, 16, 0.8);
+    border-radius: 16px;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    
+    backdrop-filter: blur(0.5px);
+    -webkit-backdrop-filter: blur(0.5px);
+    }
+
+.navbar-auth div .brand{
+    color: #ff0000fa !important;
+    font-weight: bold;
+    font-size: 36px !important;
+    font-family: 'Alfa Slab One', cursive;
+    font-style: italic;
+    letter-spacing: 5px;
+}
+
+
+.input-form input{
+    border: none !important;
+}
+
+.input-form input:focus{
+    
+    box-shadow: none !important;
+    border-bottom: 5px solid #ff0000d3 !important;
+}
+
+.web-btn{
+    background-color: #ff0000fa !important;
+    color: #fff;
+}
+
+.web-card{
+    background-color: #0f0f0f;
+    color: #fff;
+    border: none !important;
+}
+
+.web-card img{
+    height: 250px;
+    width: 100%;
+}
+
+.web-card h2{
+    padding: 10px 0;
+    font-size: 18px;
+}
+
+.web-btn:hover{
+    background-color: #c70404b4 !important;
+}
